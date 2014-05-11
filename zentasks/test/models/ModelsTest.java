@@ -5,6 +5,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.avaje.ebean.Ebean;
+
+import play.libs.Yaml;
 import play.test.*;
 import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.*;
@@ -80,10 +83,35 @@ public class ModelsTest extends WithApplication{
 		bobTask.project = bobProject;
 		bobTask.save();
 		
-		List<Task> list = Task.findToDoInvolving(bobEmail);
+		List<Task> list = Task.findTodoInvolving(bobEmail);
 		
 		assertThat(list.size()).isEqualTo(1);
 		assertThat(list.get(0).title).isEqualTo(bobTaskTitle);
 				
+	}
+	
+	@Test
+	public void fullTest(){
+		Ebean.save((List)Yaml.load("test-data.yml"));
+		
+
+        // Count things
+		assertThat(User.find.findRowCount()).isEqualTo(3);
+		assertThat(Project.find.findRowCount()).isEqualTo(7);
+		assertThat(Task.find.findRowCount()).isEqualTo(5);
+
+        // Try to authenticate as users
+		assertThat(User.authenticate("bob@example.com", "secret")).isNotNull();
+		assertThat(User.authenticate("jane@example.com", "secret")).isNotNull();
+		assertThat(User.authenticate("jeff@example.com", "badpassword")).isNull();
+		assertThat(User.authenticate("tom@example.com", "secret")).isNull();
+
+        // Find all Bob's projects
+        List<Project> bobsProjects = Project.findInvolving("bob@example.com");
+        assertThat(bobsProjects.size()).isEqualTo(5);
+
+        // Find all Bob's todo tasks
+        List<Task> bobsTasks = Task.findTodoInvolving("bob@example.com");
+        assertThat(bobsTasks.size()).isEqualTo(4);
 	}
 }
