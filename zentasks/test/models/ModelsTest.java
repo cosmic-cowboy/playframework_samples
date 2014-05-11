@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,5 +35,28 @@ public class ModelsTest extends WithApplication{
         assertThat(User.authenticate(email, "badpassword")).isNull();
         assertThat(User.authenticate("tom@gmail.com", password)).isNull();
         
+	}
+	
+	@Test
+	public void findProjectsInvolving(){
+		String bobEmail    = "bob@gmail.com"; 
+		String bobName     = "Bob"; 
+		String bobProject  = "BobProject"; 
+		String janeEmail   = "jane@gmail.com"; 
+		String janeName    = "jane"; 
+		String janeProject = "janeProject"; 
+
+		// テストユーザ作成
+		new User(bobEmail,  bobName, "secret").save();
+		new User(janeEmail, janeName, "secret").save();
+		
+		// テストプロジェクト作成
+		Project.create(bobProject,  "project", bobEmail);
+		Project.create(janeProject, "project", janeEmail);
+		List<Project> list = Project.findInvolving(bobEmail);
+		
+		assertThat(list.size()).isEqualTo(1);
+		assertThat(list.get(0).name).isEqualTo(bobProject);
+		
 	}
 }
