@@ -26,4 +26,15 @@ public class User extends Model {
 	
 	public static Finder<String, User> find = 
 			new Finder<String, User>(String.class, User.class);
+	
+	/**
+	 * ユーザ問い合わせ
+	 * 
+	 * @param email
+	 * @param password
+	 * @return
+	 */
+	public static User authenticate(String email, String password){
+		return find.where().eq("email", email).eq("password", password).findUnique();
+	}
 }
