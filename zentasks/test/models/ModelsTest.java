@@ -59,4 +59,31 @@ public class ModelsTest extends WithApplication{
 		assertThat(list.get(0).name).isEqualTo(bobProject);
 		
 	}
+	
+	@Test
+	public void findTaskInvolving(){
+		String bobEmail    = "bob@gmail.com"; 
+		String bobName     = "Bob"; 
+		String bobProjectName  = "BobProject";
+		String bobTaskTitle = "Release next version";
+		
+		// テストユーザ作成
+		User bob = new User(bobEmail,  bobName, "secret");
+		bob.save();
+		
+		// テストプロジェクト作成
+		Project bobProject = Project.create(bobProjectName,  "project", bobEmail);
+		
+		// テストタスク作成
+		Task bobTask = new Task();
+		bobTask.title = bobTaskTitle;
+		bobTask.project = bobProject;
+		bobTask.save();
+		
+		List<Task> list = Task.findToDoInvolving(bobEmail);
+		
+		assertThat(list.size()).isEqualTo(1);
+		assertThat(list.get(0).title).isEqualTo(bobTaskTitle);
+				
+	}
 }
