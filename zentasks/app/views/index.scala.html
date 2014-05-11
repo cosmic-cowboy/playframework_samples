@@ -1,7 +1,44 @@
-@(message: String)
+@(projects: List[Project], todoTasks: List[Task])
 
 @main("Welcome to Play") {
 
-    @play20.welcome(message, style = "Java")
+	<header>
+        <hgroup>
+            <h1>ダッシュボード</h1>
+            <h2>すべてのプロジェクトのタスク</h2>
+        </hgroup>
+    </header>
+
+    <article  class="tasks">
+    	@*********************************************************************
+		 *                                  　　　　　　　　　　　　　　　　　　　　 *
+		 * テンプレートの表記については下記を参照    　　　　　　　　　　　　　　　　　　　　*
+		 * http://www.playframework-ja.org/documentation/2.1.5/JavaTemplates *
+		**********************************************************************@
+        @todoTasks.groupBy(_.project).map {
+            case (project, tasks) => {
+                <div class="folder" data-folder-id="@project.id">
+                    <header>
+                        <h3>@project.name</h3>
+                    </header>
+                    <ul class="list">
+                        @tasks.map { task =>
+                            <li data-task-id="@task.id">
+                                <h4>@task.title</h4>
+                                @if(task.dueDate != null) {
+                                    <time datetime="@task.dueDate">
+                                        @task.dueDate.format("MMM dd yyyy")</time>
+                                }
+
+                                @if(task.assignedTo != null && task.assignedTo.email != null) {
+                                    <span class="assignedTo">@task.assignedTo.email</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    </article>
 
 }
