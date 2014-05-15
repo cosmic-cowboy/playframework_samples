@@ -3,11 +3,12 @@ package controllers;
 import models.Project;
 import models.Task;
 import models.User;
-import play.*;
 import play.data.Form;
-import play.mvc.*;
-import views.html.*;
-import views.html.helper.form;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.Security;
+import views.html.index;
+import views.html.login;
 
 public class Application extends Controller {
 
@@ -39,6 +40,10 @@ public class Application extends Controller {
         return ok(login.render(f));
     }
     
+    /**
+     * ログイン画面の認証処理
+     * @return
+     */
     public static Result authenticate(){
     	Form<Login> loginForm = new Form(Login.class).bindFromRequest();
     	if(loginForm.hasErrors()){
@@ -63,4 +68,13 @@ public class Application extends Controller {
         		Task.find.all()
         ));
     }
+	
+    /****************
+     * ログアウト画面　*
+     ****************/
+	public static Result logout() {
+		session().clear();
+		flash("success","You're been logged out");
+		return redirect(routes.Application.login());
+	}
 }

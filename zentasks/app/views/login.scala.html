@@ -18,6 +18,11 @@
 					@form.globalError.message
 				</p>
 			}
+			@if(flash.contains("success")) {
+			    <p class="success">
+			        @flash.get("success")
+			    </p>
+			}
 			<p>
 				<input type="email" name="email" placehodler="メールアドレス" value='@form("email").value'>
 			</p>
