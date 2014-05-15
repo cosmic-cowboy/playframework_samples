@@ -1,13 +1,7 @@
 package controllers;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static play.test.Helpers.callAction;
-import static play.test.Helpers.fakeApplication;
-import static play.test.Helpers.fakeGlobal;
-import static play.test.Helpers.fakeRequest;
-import static play.test.Helpers.inMemoryDatabase;
-import static play.test.Helpers.session;
-import static play.test.Helpers.status;
+import static play.test.Helpers.*;
 
 import java.util.List;
 
@@ -39,5 +33,24 @@ public class LoginTest extends WithApplication {
 		);
         assertThat(status(result)).isEqualTo(400);
         assertThat(session(result).get("email")).isNull();
+	}
+	
+	@Test
+	public void authenticated(){
+		Result result = callAction(
+				controllers.routes.ref.Application.index(),
+				fakeRequest().withSession("email", "bob@example.com")
+		);
+		assertThat(status(result)).isEqualTo(200);
+	}
+	
+	@Test
+	public void notAuthenticated() {
+		Result result = callAction(
+				controllers.routes.ref.Application.index(),
+				fakeRequest()
+		);
+		assertThat(status(result)).isEqualTo(303);
+		assertThat(header("Location", result)).isEqualTo("/login");
 	}
 }
