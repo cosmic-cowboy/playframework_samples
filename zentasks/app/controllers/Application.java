@@ -34,7 +34,7 @@ public class Application extends Controller {
      * ログイン画面のアクション
      * @return
      */
-    public static Result login() {
+	public static Result login() {
     	Form<Login> f = new Form(Login.class);
         return ok(login.render(f));
     }
@@ -56,6 +56,7 @@ public class Application extends Controller {
      * トップページのアクション
      * @return
      */
+	@Security.Authenticated(Secured.class)
     public static Result index() {
         return ok(index.render(
         		Project.find.all(),
