@@ -54,4 +54,12 @@ public class Task extends Model{
 		
 	}
 	
+	/**
+	 * プロジェクトごとのタスクを取得
+	 * @param projectId
+	 * @return
+	 */
+	public static List<Task> findByProject(Long projectId){
+		return find.where().eq("project.id", projectId).findList();
+	}
 }

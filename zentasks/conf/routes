@@ -11,6 +11,8 @@ POST    /projects                   controllers.Projects.add()
 POST    /projects/groups            controllers.Projects.addGroup()
 DELETE  /projects/:projectId        controllers.Projects.delete(projectId: Long)
 PUT     /projects/:projectId        controllers.Projects.rename(projectId: Long)
+GET     /projects/:projectId/tasks  controllers.Tasks.index(projectId: Long)
+POST    /projects/:projectId/tasks  controllers.Tasks.add(projectId: Long, folder: String)
 
 # Javascript Routes
 # /assets/*fileの上に置かないとアクセスできないので注意
