@@ -57,4 +57,30 @@ public class Project extends Model {
 				.eq("members.email", ownerEmail)
 				.findList();
 	}
+	
+	/**
+	 * ユーザがプロジェクトに参加しているか
+	 * @param projectId:プロジェクトID
+	 * @param ownerEmail:ユーザのEmail
+	 * @return
+	 */
+	public static boolean isMember(Long projectId, String ownerEmail){
+		return find.where()
+				.eq("members.email", ownerEmail)
+				.eq("id", projectId)
+				.findRowCount() > 0;
+	}
+	
+	/**
+	 * プロジェクトの名称を変更する
+	 * @param projectId:プロジェクトID
+	 * @param newName:プロジェクト名
+	 * @return
+	 */
+	public static String rename(Long projectId, String newName){
+		Project project = find.ref(projectId);
+		project.name = newName;
+		project.update();
+		return newName;
+	}
 }
