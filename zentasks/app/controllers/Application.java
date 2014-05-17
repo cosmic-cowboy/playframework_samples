@@ -4,11 +4,9 @@ import models.Project;
 import models.Task;
 import models.User;
 import play.data.Form;
-import play.mvc.Controller;
-import play.mvc.Result;
-import play.mvc.Security;
-import views.html.index;
-import views.html.login;
+import play.mvc.*;
+import play.*;
+import views.html.*;
 
 public class Application extends Controller {
 
@@ -73,9 +71,36 @@ public class Application extends Controller {
     /****************
      * ログアウト画面　*
      ****************/
+	/**
+	 * ログアウトのアクション
+	 * @return
+	 */
 	public static Result logout() {
 		session().clear();
 		flash("success","You're been logged out");
 		return redirect(routes.Application.login());
+	}
+	
+
+    /****************
+     * ユーティリティ  *
+     ****************/
+	/**
+	 * Javascriptルーター
+	 * URL を組み立てて AJAX リクエストを送信するクライアントサイドルーター
+	 * "jsRoutes"がグローバル変数に結びつく
+	 * @return
+	 */
+	public static Result javascriptRoutes() {
+		response().setContentType("text/javascript");
+		return ok(
+		        Routes.javascriptRouter("jsRoutes",
+		        // Routes
+		            controllers.routes.javascript.Projects.add(),
+		            controllers.routes.javascript.Projects.delete(),
+		            controllers.routes.javascript.Projects.rename(),
+		            controllers.routes.javascript.Projects.addGroup()
+		        )
+		    );
 	}
 }
