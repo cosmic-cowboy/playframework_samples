@@ -71,5 +71,39 @@ public class Projects extends Controller {
 		);
 	}
 	
+	/**
+	 * グループをリネームする
+	 * @param group
+	 * @return
+	 */
+	public static Result renameGroup(String group){
+		return TODO;
+	}
 	
+	/**
+	 * グループを削除する
+	 * @param group
+	 * @return
+	 */
+	public static Result deleteGroup(String group){
+		return TODO;
+	}
+	
+	/**
+	 * プロジェクトにメンバーを追加する
+	 * @param projectId
+	 * @return
+	 */
+	public static Result addUser(Long projectId){
+		return TODO;
+	}
+
+	/**
+	 * プロジェクトからメンバーを削除する
+	 * @param projectId
+	 * @return
+	 */
+	public static Result removeUser(Long projectId){
+		return TODO;
+	}
 }

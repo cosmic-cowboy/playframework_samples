@@ -32,6 +32,12 @@ public class Tasks extends Controller{
 		}
 	}
 	
+	/**
+	 * プロジェクトにタスクを追加する
+	 * @param projectId
+	 * @param folder
+	 * @return
+	 */
 	public static Result add(Long projectId, String folder){
 		if(Secured.isMemberOf(projectId)){
 			Form<Task> taskForm = form(Task.class).bindFromRequest();
@@ -44,5 +50,50 @@ public class Tasks extends Controller{
 		} else {
 			return forbidden();
 		}
+	}
+	
+	/**
+	 * タスクを削除する
+	 * @param projectId
+	 * @return
+	 */
+	public static Result delete(Long taskId){
+		return TODO;
+	}
+
+	/**
+	 * タスクを更新する
+	 * @param projectId
+	 * @return
+	 */
+	public static Result update(Long taskId){
+		return TODO;
+	}
+
+	/**
+	 * フォルダーを追加する
+	 * @param projectId
+	 * @return
+	 */
+	public static Result addFolder(){
+		return TODO;
+	}
+
+	/**
+	 * フォルダーを削除する
+	 * @param projectId
+	 * @return
+	 */
+	public static Result deleteFolder(Long projectId, String folder){
+		return TODO;
+	}
+
+	/**
+	 * フォルダーをリネームする
+	 * @param projectId
+	 * @return
+	 */
+	public static Result renameFolder(Long projectId, String folder){
+		return TODO;
 	}
 }
