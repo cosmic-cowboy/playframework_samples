@@ -1,12 +1,12 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Project;
 import models.Task;
 import play.data.Form;
 import play.mvc.*;
-import views.html.helper.form;
 import views.html.tasks.*;
 import static play.data.Form.*;
 
@@ -90,7 +90,7 @@ public class Tasks extends Controller{
 	 * @return
 	 */
 	public static Result addFolder(){
-		return TODO;
+		return ok(folder.render("newFolder", new ArrayList<Task>()));
 	}
 
 	/**
@@ -99,7 +99,12 @@ public class Tasks extends Controller{
 	 * @return
 	 */
 	public static Result deleteFolder(Long projectId, String folder){
-		return TODO;
+		if(Secured.isMemberOf(projectId)){
+			Task.deleteInFolder(projectId, folder);
+			return ok();
+		} else {
+			return forbidden();
+		}
 	}
 
 	/**
@@ -108,6 +113,11 @@ public class Tasks extends Controller{
 	 * @return
 	 */
 	public static Result renameFolder(Long projectId, String folder){
-		return TODO;
+		if(Secured.isMemberOf(projectId)){
+			String newName = form().bindFromRequest().get("name");
+			return ok(Task.renameFolder(projectId, folder, newName));
+		} else {
+			return forbidden();
+		}
 	}
 }

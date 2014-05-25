@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.avaje.ebean.Ebean;
+
 import play.data.validation.Constraints.*;
 import play.data.format.*;
 import play.db.ebean.Model;
+import play.mvc.Content;
 
 @Entity
 public class Task extends Model{
@@ -90,5 +93,39 @@ public class Task extends Model{
 		Task task = Task.find.ref(taskId);
 		task.done = progress;
 		task.update();
+	}
+
+	/**
+	 * フォルダー名を変更する
+	 * @param projectId
+	 * @param folder
+	 * @param newName
+	 * @return
+	 */
+	public static String renameFolder(Long projectId, String folder,
+			String newName) {
+		Ebean.createSqlUpdate(
+			"update task set folder = :newName where folder = :folder and project_id = :projectId"
+		)
+		.setParameter("newName", newName)
+		.setParameter("folder", folder)
+		.setParameter("projectId", projectId)
+		.execute();
+		return newName;
+	}
+
+	/**
+	 * フォルダを削除・フォルダ内のタスクも削除
+	 * @param projectId
+	 * @param folder
+	 */
+	public static void deleteInFolder(Long projectId, String folder) {
+		Ebean.createSqlUpdate(
+			"delete from task where project_id = :projectId and folder = :folder"
+		)
+		.setParameter("projectId", projectId)
+		.setParameter("folder", folder)
+		.execute();
+		
 	}
 }
