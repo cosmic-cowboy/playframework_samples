@@ -83,4 +83,28 @@ public class Project extends Model {
 		project.update();
 		return newName;
 	}
+
+	/**
+	 * プロジェクトメンバーを削除する
+	 * @param projectId:プロジェクトID
+	 * @param username:ユーザ名
+	 */
+	public static void removeMember(Long projectId, String username) {
+        Project project = Project.find.setId(projectId).fetch("members", "email").findUnique();
+        project.members.remove(User.find.ref(username));
+        project.saveManyToManyAssociations("members");
+		
+	}
+
+	/**
+	 * プロジェクトメンバーを追加する
+	 * @param projectId:プロジェクトID
+	 * @param username:ユーザ名
+	 */
+	public static void addMember(Long projectId, String username) {
+        Project project = Project.find.setId(projectId).fetch("members", "email").findUnique();
+        project.members.add(User.find.ref(username));
+        project.saveManyToManyAssociations("members");
+		
+	}
 }

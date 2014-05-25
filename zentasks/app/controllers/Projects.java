@@ -95,7 +95,13 @@ public class Projects extends Controller {
 	 * @return
 	 */
 	public static Result addUser(Long projectId){
-		return TODO;
+		if(Secured.isMemberOf(projectId)){
+			String username = form().bindFromRequest().get("user");
+			Project.addMember(projectId, username);
+			return ok();
+		} else {
+			return forbidden();
+		}
 	}
 
 	/**
@@ -104,6 +110,12 @@ public class Projects extends Controller {
 	 * @return
 	 */
 	public static Result removeUser(Long projectId){
-		return TODO;
+		if(Secured.isMemberOf(projectId)){
+			String username = form().bindFromRequest().get("user");
+			Project.removeMember(projectId, username);
+			return ok();
+		} else {
+			return forbidden();
+		}
 	}
 }
