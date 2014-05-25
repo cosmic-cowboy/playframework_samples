@@ -66,4 +66,29 @@ public class Task extends Model{
 	public static List<Task> findByProject(Long projectId){
 		return find.where().eq("project.id", projectId).findList();
 	}
+
+	/**
+	 * タスクの担当者かどうかを判定
+	 * @param taskId
+	 * @param ownerEmail
+	 * @return
+	 */
+	public static boolean isOwnerOf(Long taskId, String ownerEmail) {
+		return find.where()
+				.eq("id", taskId)
+				.eq("assignedTo.email", ownerEmail)
+				.findRowCount() > 0;
+	}
+
+	
+	/**
+	 * タスクの進捗状況を更新する
+	 * @param taskId
+	 * @param progress
+	 */
+	public static void markAsDone(Long taskId, Boolean progress) {
+		Task task = Task.find.ref(taskId);
+		task.done = progress;
+		task.update();
+	}
 }

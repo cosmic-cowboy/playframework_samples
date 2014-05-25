@@ -1,6 +1,6 @@
 package controllers;
 
-import models.Project;
+import models.*;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.mvc.Http.Context;
@@ -38,5 +38,10 @@ public class Secured extends Security.Authenticator{
 		// アクションの中にいない場合でも、この便利な方法でリクエストにアクセスすることができる
 		String ownerEmail = Context.current().request().username();
 		return Project.isMember(projectId, ownerEmail);
+	}
+	
+	public static boolean isOwnerOf(Long taskId){
+		String ownerEmail = Context.current().request().username();
+		return Task.isOwnerOf(taskId, ownerEmail);
 	}
 }

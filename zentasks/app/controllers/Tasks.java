@@ -58,7 +58,12 @@ public class Tasks extends Controller{
 	 * @return
 	 */
 	public static Result delete(Long taskId){
-		return TODO;
+		if(Secured.isOwnerOf(taskId)){
+			Task.find.ref(taskId).delete();
+			return ok();
+		} else {
+			return forbidden();			
+		}
 	}
 
 	/**
@@ -67,7 +72,16 @@ public class Tasks extends Controller{
 	 * @return
 	 */
 	public static Result update(Long taskId){
-		return TODO;
+		if(Secured.isOwnerOf(taskId)){
+			Boolean progress = Boolean.valueOf(form().bindFromRequest().get("done"));
+			Task.markAsDone(
+				taskId,
+				progress
+			);
+			return ok();
+		} else {
+			return forbidden();			
+		}
 	}
 
 	/**
