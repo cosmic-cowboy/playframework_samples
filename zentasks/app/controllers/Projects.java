@@ -77,7 +77,9 @@ public class Projects extends Controller {
 	 * @return
 	 */
 	public static Result renameGroup(String group){
-		return TODO;
+		String newName = form().bindFromRequest().get("name");
+		return ok(Project.renameFolder(group, newName));
+
 	}
 	
 	/**
@@ -86,7 +88,8 @@ public class Projects extends Controller {
 	 * @return
 	 */
 	public static Result deleteGroup(String group){
-		return TODO;
+		Project.deleteInFolder(group);
+		return ok();
 	}
 	
 	/**

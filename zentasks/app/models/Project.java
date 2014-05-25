@@ -8,7 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.avaje.ebean.Ebean;
+
 import play.db.ebean.Model;
+import play.mvc.Content;
 
 @Entity
 public class Project extends Model {
@@ -106,5 +109,32 @@ public class Project extends Model {
         project.members.add(User.find.ref(username));
         project.saveManyToManyAssociations("members");
 		
+	}
+
+	/**
+	 * @param group
+	 * @param newName
+	 * @return
+	 */
+	public static String renameFolder(String group, String newName) {
+		Ebean.createSqlUpdate(
+				"update project set folder= :newName where folder= :folder"
+			)
+			.setParameter("newName", newName)
+			.setParameter("folder", group)
+			.execute();
+		return newName;
+	}
+
+	/**
+	 * グループに含まれるプロジェクトをすべて削除する
+	 * @param group
+	 */
+	public static void deleteInFolder(String group) {
+		Ebean.createSqlUpdate(
+			"delete from project where folder= :folder"
+		)
+		.setParameter("folder", group)
+		.execute();
 	}
 }
