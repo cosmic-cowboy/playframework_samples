@@ -1,0 +1,41 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+
+# Authentication
+GET     /login                      controllers.Application.login()
+POST    /login                      controllers.Application.authenticate()
+GET     /logout                     controllers.Application.logout()
+
+# Project
+POST    /projects                   controllers.Projects.add()
+# Project Group
+POST    /projects/groups            controllers.Projects.addGroup()
+DELETE  /projects/groups            controllers.Projects.deleteGroup(group: String)
+PUT     /projects/groups            controllers.Projects.renameGroup(group: String)
+# Project
+DELETE  /projects/:projectId        controllers.Projects.delete(projectId: Long)
+PUT     /projects/:projectId        controllers.Projects.rename(projectId: Long)
+# Project Member
+POST    /projects/:projectId/team   controllers.Projects.addUser(projectId: Long)
+DELETE  /projects/:projectId/team   controllers.Projects.removeUser(projectId: Long)
+
+# Task
+GET     /projects/:projectId/tasks  controllers.Tasks.index(projectId: Long)
+POST    /projects/:projectId/tasks  controllers.Tasks.add(projectId: Long, folder: String)
+DELETE  /tasks/:taskId              controllers.Tasks.delete(taskId: Long)
+PUT     /tasks/:taskId              controllers.Tasks.update(taskId: Long)
+# Task Folder
+POST    /tasks/folder               controllers.Tasks.addFolder()
+DELETE  /projects/:projectId/tasks/folder  controllers.Tasks.deleteFolder(projectId: Long, folder: String)
+PUT     /projects/:projectId/tasks/folder  controllers.Tasks.renameFolder(projectId: Long, folder: String)
+
+# Javascript Routes
+# /assets/*fileの上に置かないとアクセスできないので注意
+GET     /assets/javascripts/routes  controllers.Application.javascriptRoutes()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

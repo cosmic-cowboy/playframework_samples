@@ -1,0 +1,33 @@
+@* 再利用可能なブロックの宣言 *@
+@(folder: String, tasks: List[Task])
+
+<div class="folder" data-folder-id="@folder">
+    <header>
+        <input type="checkbox" />
+        <h3>@folder</h3>
+        <span class="counter"></span>
+        <dl class="options">
+            <dt>Options</dt>
+            <dd>
+                <a class="deleteCompleteTasks" href="#">完了したタスクを削除する</a>
+                <a class="deleteAllTasks" href="#">すべてのタスクを削除する</a>
+                <a class="deleteFolder" href="#">フォルダを削除</a>
+            </dd>
+        </dl>
+        <span class="loader">Loading</span>
+    </header>
+    <ul class="list">
+        @tasks.map { task =>
+            @views.html.tasks.item( task )
+        }
+    </ul>
+    <form class="addTask">
+    	<input type="hidden" name="folder" value="@folder" />
+    	<input type="text" name="taskBody" placeholder="新しいタスク" />
+    	<input type="text" name="dueDate" class="dueDate" placeholder="期限 mm/dd/yy" />
+    	<div class="assignedTo">
+    		<input type="text" name="assignedTo" placeholder="担当者" />
+    	</div>
+    	<input type="submit" />
+    </form>
+</div>
